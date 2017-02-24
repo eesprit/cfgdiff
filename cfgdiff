@@ -129,10 +129,16 @@ for fromfile, tofile in zip(fromlist, tolist):
         rc = 1
         if fromfile != '/dev/null':
             x = os.path.relpath(fromfile, options.fromfile)
-            print('Only in %s: %s' % (options.fromfile, x))
+            if not options.m:
+                print('Only in %s: %s' % (options.fromfile, x))
+            else:
+                print('<p>Only in %s: %s</p><br/>' % (options.fromfile, x))
         else:
             x = os.path.relpath(tofile, options.tofile)
-            print('Only in %s: %s' % (options.tofile, x))
+            if not options.m:
+                print('Only in %s: %s' % (options.tofile, x))
+            else:
+                print('<p>Only in %s: %s</p><br/>' % (options.tofile, x))
         continue
 
     fromini = cls(fromfile, options.ordered, parsercls)
