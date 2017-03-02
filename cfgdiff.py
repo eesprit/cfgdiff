@@ -146,9 +146,21 @@ class JSONDiff(DiffBase):
 
 class YAMLDiff(DiffBase):
 
+    def __sort_links(self):
+        if self.config.has_key("services"): # version 2
+            services = self.config["services"]
+        else:
+            services = self.config
+        for service in services.keys():
+            for links in ("external_links", "links"):
+                if services[service].has_key(links):
+                    services[service][links].sort()
+
     def parse(self):
         with open(self.filename) as f:
             self.config = yaml.safe_load(f)
+            if not self.ordered:
+                self.__sort_links()
             yaml.safe_dump(self.config, self.pretty, default_flow_style=False,
                            indent=2)
 
